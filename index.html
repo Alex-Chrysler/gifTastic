@@ -11,6 +11,12 @@
 <body>
 
 <h1>Gif Getter 3000</h1>
+<h2>>Click on a show to get it's top 10 gifs!<
+    <br>
+>Click the gifs to pause or unpause them.<
+    <br>
+>Feel free to add your own favorite show and see what you can find.<
+</h2>
 <div id="buttons-go-here"></div>
 <form><span id= "textBox">Write your favorite show here! <input id="show-box" type="text" ><input id="add-show-box" value="Add Item" type="submit"></span></span></form>
 <div id="gifs-appear-here"></div>
@@ -19,7 +25,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
 
-var showArr = ["The Office", "Friends", "Survivor"]
+var showArr = ["The Office", "How I Met your Mother", "Survivor", "Avatar: The Last Airbender", "Glee"]
 
 function renderButtons() {
     $("#buttons-go-here").empty()
@@ -32,7 +38,7 @@ function renderButtons() {
 
 }}
 
- $("#add-show-box").on("click", function(event) {
+ $(document).on("click", "#add-show-box", function(event) {
 
      event.preventDefault();
      var show = $("#show-box").val().trim();
@@ -79,17 +85,16 @@ $(document).on("click", "button", function() {
             showDiv.append(p);
             showDiv.append(showImage);
 
-            
-
-
-
-            
+        
 
         $("#gifs-appear-here").prepend(showDiv);
             
         }
 
     })
+
+    })
+
     $(document).on("click", '.gif', function() {
     
     var state = $(this).attr("data-state");
@@ -102,9 +107,6 @@ $(document).on("click", "button", function() {
         $(this).attr("data-state", "still");
     }
 });
-    
-
-})
 
 
 

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GifTastic</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="Assets/style.css">
+
+</head>
+<body>
+
+<h1>Gif Getter 3000</h1>
+<div id="buttons-go-here"></div>
+<form><span id= "textBox">Write your favorite show here! <input id="show-box" type="text" ><input id="add-show-box" value="Add Item" type="submit"></span></span></form>
+<div id="gifs-appear-here"></div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+var showArr = ["The Office", "Friends", "Survivor"]
+
+function renderButtons() {
+    $("#buttons-go-here").empty()
+    for (var i = 0; i < showArr.length; i++) {     
+        var a = $("<button>");
+        a.addClass("show");
+        a.attr("data-show", showArr[i]);
+        a.text(showArr[i]);
+        $("#buttons-go-here").append(a);
+
+}}
+
+ $("#add-show-box").on("click", function(event) {
+
+     event.preventDefault();
+     var show = $("#show-box").val().trim();
+     showArr.push(show);
+     console.log(show)
+     renderButtons();
+ 
+ })
+
+     renderButtons();
+
+
+
+
+$(document).on("click", "button", function() {
+    var show = $(this).attr("data-show");
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        show + "&api_key=dc6zaTOxFJmzC&limit=10";
+    
+   
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+
+    .then(function(response) {
+          console.log(queryURL);
+          console.log(response);
+          var results = response.data;
+
+          for (var i = 0; i < results.length; i++) {
+
+            var showDiv = $("<div>");
+            var p = $("<p>").text("Rating: " + results[i].rating);
+            var showImage = $("<img>");
+            
+
+            showImage.attr("src", results[i].images.fixed_height.url);
+            showImage.attr("data-still", results[i].images.fixed_height_still.url)
+            showImage.attr("data-animate", results[i].images.fixed_height.url)
+            showImage.attr("data-state = animate")
+            showImage.addClass("gif")
+            showDiv.append(p);
+            showDiv.append(showImage);
+
+            
+
+
+
+            
+
+        $("#gifs-appear-here").prepend(showDiv);
+            
+        }
+
+    })
+    $(document).on("click", '.gif', function() {
+    
+    var state = $(this).attr("data-state");
+
+    if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+    } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+    }
+});
+    
+
+})
+
+
+
+
+</script>
+       
+
+    
+    
+</body>
+</html>
